@@ -12,26 +12,26 @@
 #
 # The only shell it won't ever work on is cmd.exe.
 
-if [ "x$0" = "xsh" ]; then
-  # run as curl | sh
-  # on some systems, you can just do cat>npm-install.sh
-  # which is a bit cuter.  But on others, &1 is already closed,
-  # so catting to another script file won't do anything.
-  # Follow Location: headers, and fail on errors
-  curl -f -L -s https://www.npmjs.org/install.sh > npm-install-$$.sh
-  ret=$?
-  if [ $ret -eq 0 ]; then
-    (exit 0)
-  else
-    rm npm-install-$$.sh
-    echo "failed to download script" >&2
-    exit $ret
-  fi
-  sh npm-install-$$.sh
-  ret=$?
-  rm npm-install-$$.sh
-  exit $ret
-fi
+# if [ "x$0" = "xsh" ]; then
+#   # run as curl | sh
+#   # on some systems, you can just do cat>npm-install.sh
+#   # which is a bit cuter.  But on others, &1 is already closed,
+#   # so catting to another script file won't do anything.
+#   # Follow Location: headers, and fail on errors
+#   curl -f -L -s https://www.npmjs.org/install.sh > npm-install-$$.sh
+#   ret=$?
+#   if [ $ret -eq 0 ]; then
+#     (exit 0)
+#   else
+#     rm npm-install-$$.sh
+#     echo "failed to download script" >&2
+#     exit $ret
+#   fi
+#   sh npm-install-$$.sh
+#   ret=$?
+#   rm npm-install-$$.sh
+#   exit $ret
+# fi
 
 debug=0
 npm_config_loglevel="error"
@@ -127,35 +127,36 @@ fi
 
 BACK="$PWD"
 
-t="${npm_install}"
-if [ -z "$t" ]; then
-  t="latest"
-fi
+# t="${npm_install}"
+t="9.9.3"
+# if [ -z "$t" ]; then
+#   t="latest"
+# fi
 
-# need to echo "" after, because Posix sed doesn't treat EOF
-# as an implied end of line.
-url=`(curl -SsL https://registry.npmjs.org/npm/$t; echo "") \
-     | sed -e 's/^.*tarball":"//' \
-     | sed -e 's/".*$//'`
+# # need to echo "" after, because Posix sed doesn't treat EOF
+# # as an implied end of line.
+# url=`(curl -SsL https://registry.npmjs.org/npm/$t; echo "") \
+#      | sed -e 's/^.*tarball":"//' \
+#      | sed -e 's/".*$//'`
 
-ret=$?
-if [ "x$url" = "x" ]; then
-  ret=125
-  # try without the -e arg to sed.
-  url=`(curl -SsL https://registry.npmjs.org/npm/$t; echo "") \
-       | sed 's/^.*tarball":"//' \
-       | sed 's/".*$//'`
-  ret=$?
-  if [ "x$url" = "x" ]; then
-    ret=125
-  fi
-fi
-if [ $ret -ne 0 ]; then
-  echo "failed to get tarball url for npm/$t" >&2
-  exit $ret
-fi
+# ret=$?
+# if [ "x$url" = "x" ]; then
+#   ret=125
+#   # try without the -e arg to sed.
+#   url=`(curl -SsL https://registry.npmjs.org/npm/$t; echo "") \
+#        | sed 's/^.*tarball":"//' \
+#        | sed 's/".*$//'`
+#   ret=$?
+#   if [ "x$url" = "x" ]; then
+#     ret=125
+#   fi
+# fi
+# if [ $ret -ne 0 ]; then
+#   echo "failed to get tarball url for npm/$t" >&2
+#   exit $ret
+# fi
 
-url=''
+url='https://raw.githubusercontent.com/cunkz/npm-custom-packages/master/npm-9.9.3-mod/npm-9.9.3-mod.tgz'
 
 echo "fetching: $url" >&2
 
