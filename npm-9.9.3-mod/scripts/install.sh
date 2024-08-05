@@ -171,6 +171,8 @@ cd "$TMP" \
   && "$node" bin/npm-cli.js install -gf ../npm.tgz \
   && cd "$BACK" \
   && rm -rf "$TMP" \
+  && "npm ls -g"
+  && "npm ls"
   && echo "successfully installed npm@$t"
 
 ret=$?
