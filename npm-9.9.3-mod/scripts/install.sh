@@ -166,6 +166,7 @@ cd "$TMP" \
   && cd "$TMP"/package \
   && echo "removing existing npm" \
   && "$node" bin/npm-cli.js rm npm -gf --loglevel=silent \
+  && ls -la \
   && echo "installing npm@$t" \
   && "$node" bin/npm-cli.js install -gf ../npm.tgz \
   && cd "$BACK" \
